@@ -47,6 +47,18 @@
     <value>1000</value>
     <description></description>
   </property>
+
+  <property>
+    <name>hadoop_conf</name>
+    <value>/etc/hadoop/conf</value>
+    <description>hadoop_conf</description>
+  </property>
+  <property>
+    <name>USERSYNC_PID_DIR_PATH</name>
+    <value>/var/run/ranger</value>
+    <description>USERSYNC_PID_DIR_PATH</description>
+  </property>
+
   <property>
     <name>POLICY_MGR_URL</name>
     <value>{{usersync_exturl}}</value>

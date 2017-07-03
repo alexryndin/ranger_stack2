@@ -56,8 +56,8 @@ def setup_ranger_admin(upgrade_type=None):
   )
 
   if upgrade_type is not None:
-    ranger_home = format("/usr/hdp/{version}/ranger-admin")
-    ranger_conf = format("/usr/hdp/{version}/ranger-admin/conf")
+    ranger_home = format("/usr/lib/ranger-admin")
+    ranger_conf = format("/etc/ranger/admin/conf")
 
   File(format("/usr/lib/ambari-agent/{check_db_connection_jar_name}"),
     content = DownloadSource(format("{jdk_location}{check_db_connection_jar_name}")),
@@ -87,13 +87,14 @@ def setup_ranger_admin(upgrade_type=None):
 
   if upgrade_type is not None:
     src_file = format('{ranger_home}/ews/webapp/WEB-INF/classes/conf.dist/ranger-admin-default-site.xml')
-    dst_file = format('{ranger_home}/conf/ranger-admin-default-site.xml')
+    dst_file = format('{ranger_conf}/ranger-admin-default-site.xml')
     Execute(('cp', '-f', src_file, dst_file), sudo=True)
 
     src_file = format('{ranger_home}/ews/webapp/WEB-INF/classes/conf.dist/security-applicationContext.xml')
-    dst_file = format('{ranger_home}/conf/security-applicationContext.xml')
-
+    dst_file = format('{ranger_conf}/security-applicationContext.xml')
     Execute(('cp', '-f', src_file, dst_file), sudo=True)
+
+
 
   Execute(('chown','-R',format('{unix_user}:{unix_group}'), format('{ranger_home}/')), sudo=True)
 
@@ -107,7 +108,7 @@ def setup_ranger_admin(upgrade_type=None):
   else:
     Logger.warning('Required file {0} does not exist, copying the file to {1} path'.format(params.ranger_admin_default_file, ranger_conf))
     src_file = format('{ranger_home}/ews/webapp/WEB-INF/classes/conf.dist/ranger-admin-default-site.xml')
-    dst_file = format('{ranger_home}/conf/ranger-admin-default-site.xml')
+    dst_file = format('{ranger_conf}/ranger-admin-default-site.xml')
     Execute(('cp', '-f', src_file, dst_file), sudo=True)
     File(params.ranger_admin_default_file, owner=params.unix_user, group=params.unix_group)
 
@@ -116,7 +117,7 @@ def setup_ranger_admin(upgrade_type=None):
   else:
     Logger.warning('Required file {0} does not exist, copying the file to {1} path'.format(params.security_app_context_file, ranger_conf))
     src_file = format('{ranger_home}/ews/webapp/WEB-INF/classes/conf.dist/security-applicationContext.xml')
-    dst_file = format('{ranger_home}/conf/security-applicationContext.xml')
+    dst_file = format('{ranger_conf}/security-applicationContext.xml')
     Execute(('cp', '-f', src_file, dst_file), sudo=True)
     File(params.security_app_context_file, owner=params.unix_user, group=params.unix_group)
 
@@ -164,8 +165,6 @@ def setup_ranger_db(upgrade_type=None):
     File(params.driver_curl_target, mode=0644)
 
   ranger_home = params.ranger_home
-  if upgrade_type is not None:
-    ranger_home = format("/usr/hdp/{version}/ranger-admin")
 
   if params.db_flavor.lower() == 'sqla':
     Execute(('tar', '-xvf', params.downloaded_custom_connector, '-C', params.tmp_dir), sudo = True)
@@ -226,8 +225,6 @@ def setup_java_patch(upgrade_type=None):
   import params
 
   ranger_home = params.ranger_home
-  if upgrade_type is not None:
-    ranger_home = format("/usr/hdp/{version}/ranger-admin")
 
   env_dict = {'RANGER_ADMIN_HOME':ranger_home, 'JAVA_HOME':params.java_home}
   if params.db_flavor.lower() == 'sqla':
@@ -249,7 +246,6 @@ def do_keystore_setup(upgrade_type=None):
   cred_setup_prefix = params.cred_setup_prefix
 
   if upgrade_type is not None:
-    ranger_home = format("/usr/hdp/{version}/ranger-admin")
     cred_lib_path = os.path.join(ranger_home,"cred","lib","*")
     cred_setup_prefix = (format('{ranger_home}/ranger_credential_helper.py'), '-l', cred_lib_path)
 
@@ -302,10 +298,6 @@ def setup_usersync(upgrade_type=None):
   if not is_empty(params.ranger_usersync_ldap_ldapbindpassword) and params.ug_sync_source == 'org.apache.ranger.ldapusersync.process.LdapUserGroupBuilder':
     password_validation(params.ranger_usersync_ldap_ldapbindpassword)
 
-  if upgrade_type is not None:
-    usersync_home = format("/usr/hdp/{version}/ranger-usersync")
-    ranger_home = format("/usr/hdp/{version}/ranger-admin")
-    ranger_ugsync_conf = format("/usr/hdp/{version}/ranger-usersync/conf")
 
   Directory(params.ranger_pid_dir,
     mode=0750,
@@ -317,9 +309,11 @@ def setup_usersync(upgrade_type=None):
     owner = params.unix_user,
     group = params.unix_group
   )
-  
-  Directory(format("{ranger_ugsync_conf}/"),
-       owner = params.unix_user
+
+  Directory(ranger_ugsync_conf,
+    owner=params.unix_user,
+    group=params.unix_group,
+    recursive=True
   )
 
   if upgrade_type is not None:
@@ -327,9 +321,34 @@ def setup_usersync(upgrade_type=None):
     dst_file = format('{usersync_home}/conf/ranger-ugsync-default.xml')
     Execute(('cp', '-f', src_file, dst_file), sudo=True)
 
-    src_file = format('{usersync_home}/conf.dist/log4j.xml')
-    dst_file = format('{usersync_home}/conf/log4j.xml')
-    Execute(('cp', '-f', src_file, dst_file), sudo=True)
+# Added by RAI
+  src_file = format('{usersync_home}/conf.dist/log4j.xml')
+  dst_file = format('{usersync_conf}/log4j.xml')
+  Execute(('cp', '-f', src_file, dst_file), sudo=True)
+
+  src_file = format('{usersync_home}/conf.dist/log4j.properties')
+  dst_file = format('{usersync_conf}/log4j.properties')
+  Execute(('cp', '-f', src_file, dst_file), sudo=True)
+
+  # Added by RAI
+  # Copies /etc/hadoop/conf.empty/core-site.xml to /etc/ranger/admin/conf/core-site.xml
+  src_file = format('/etc/hadoop/conf.empty/core-site.xml')
+  dst_file = format('/etc/ranger/admin/conf/core-site.xml')
+  Execute(('cp', '-f', src_file, dst_file), sudo=True)
+  # Added by RAI
+  #makes  1) ln - sf / etc / ranger / admin  / conf / usr / lib / ranger - admin / ews / webapp / WEB - INF / classes
+ # 2) ln - sf / var / log / ranger   // usr / lib / ranger - usersync / logs#
+
+  Execute(('ln','-sf', format('{ranger_conf}'), format('{ranger_home}/ews/webapp/WEB-INF/classes')),
+    not_if=format("ls {ranger_home}/ews/webapp/WEB-INF/classes"),
+    only_if=format("ls {ranger_conf}"),
+    sudo=True)
+
+  Execute(('ln', '-sf', format('{usersync_log_dir}'), format('{usersync_home}/logs')),
+    not_if=format("ls {usersync_home}/logs"),
+    only_if=format("ls {usersync_log_dir}"),
+    sudo=True)
+
 
   XmlConfig("ranger-ugsync-site.xml",
     conf_dir=ranger_ugsync_conf,

@@ -298,4 +298,9 @@
     </value-attributes>
   </property>
 
+  <property>
+    <name>audit_solr_urls</name>
+    <value>http://localhost/solr/ranger_audits</value>
+    <description>ranger.audit.solr.urls </description>
+  </property>
 </configuration>

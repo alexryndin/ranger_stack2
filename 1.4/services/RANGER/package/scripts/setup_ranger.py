@@ -50,6 +50,11 @@ def setup_ranger_admin():
     properties = params.config['configurations']['admin-properties']
   )
 
+
+  ModifyPropertiesFile(format("{ranger_home}/install.properties"),
+    properties = params.config['configurations']['ranger-site']
+  )
+
   custom_config = dict()
   custom_config['unix_user'] = params.unix_user
   custom_config['unix_group'] = params.unix_group

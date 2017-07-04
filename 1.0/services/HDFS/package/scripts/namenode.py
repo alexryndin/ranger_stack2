@@ -84,6 +84,10 @@ class NameNode(Script):
     import params
     self.install_packages(env, params.exclude_packages)
     env.set_params(params)
+    Execute(('ln','-sf', format('/etc/hadoop/conf'), format('/usr/lib/hadoop/')),
+        not_if=format("ls /usr/lib/hadoop"),
+        only_if=format("ls /etc/hadoop/conf"),
+        sudo=True)
     #TODO we need this for HA because of manual steps
     self.configure(env)
 

@@ -69,10 +69,7 @@ def setup_ranger_hdfs(upgrade_type=None):
   else:
     Logger.info('Ranger admin not installed')
 
-  Execute(('ln','-sf', format('/etc/hadoop/conf'), format('/usr/lib/hadoop/')),
-    not_if=format("ls /usr/lib/hadoop"),
-    only_if=format("ls /etc/hadoop/conf"),
-    sudo=True)
+
 def create_ranger_audit_hdfs_directories(check):
   import params
 

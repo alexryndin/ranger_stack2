@@ -45,7 +45,7 @@
               <name>hive-webhcat</name>
             </package>
             <package>
-              <name>ranger-hdfs-plugin</name>
+              <name>ranger-hive-plugin</name>
               <skipUpgrade>true</skipUpgrade>
             </package>
           </packages>

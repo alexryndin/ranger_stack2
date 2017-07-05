@@ -37,7 +37,7 @@
   <property>
     <name>ranger.ks.jpa.jdbc.url</name>
     <display-name>JDBC connect string</display-name>
-    <value>jdbc:mysql://localhost</value>
+    <value>jdbc:mysql://localhost/rangerkms</value>
     <description>URL for Database</description>
     <value-attributes>
       <overridable>false</overridable>

@@ -33,7 +33,7 @@ stack_version_unformatted = str(config['hostLevelParams']['stack_version'])
 
 
 kms_home = '/usr/lib/ranger-kms'
-kms_conf_dir = '/etc/ranger/kms/conf'
+kms_conf_dir = '/etc/ranger-kms/conf'
   
 kms_log_dir = default("/configurations/kms-env/kms_log_dir", "/var/log/ranger/kms")
 java_home = config['hostLevelParams']['java_home']

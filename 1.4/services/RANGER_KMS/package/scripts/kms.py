@@ -186,7 +186,10 @@ def kms():
     Execute(('ln','-sf', "/etc/hadoop/conf/core-site.xml", params.kms_home + "/ews/core-site.xml"),
       sudo=True)
 
-    Execute(('ln','-sf', params.ews_classes_conf + "/ranger-admin-default-site.xml", params.kms_home + "/ews/ranger-admin-default-site.xml"),
+    Execute(('ln','-sf', "/usr/lib/ranger-admin/ews/webapp/WEB-INF/classes/conf/ranger-admin-default-site.xml", params.kms_home + "/ews/ranger-admin-default-site.xml"),
+      sudo=True)
+
+    Execute(('ln','-sf', params.kms_conf_dir + "ranger-kms-site.xml", params.kms_home + "/ews/"),
       sudo=True)
 
     File(format("/usr/lib/ambari-agent/{check_db_connection_jar_name}"),

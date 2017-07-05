@@ -180,6 +180,15 @@ def kms():
       recursive = True
     )
 
+    Execute(('ln','-sf', params.kms_conf_dir, params.ews_classes_conf),
+      sudo=True)
+
+    Execute(('ln','-sf', "/etc/hadoop/conf/core-site.xml", params.kms_home + "/ews/core-site.xml"),
+      sudo=True)
+
+    Execute(('ln','-sf', params.ews_classes_conf + "/ranger-admin-default-site.xml", params.kms_home + "/ews/ranger-admin-default-site.xml"),
+      sudo=True)
+
     File(format("/usr/lib/ambari-agent/{check_db_connection_jar_name}"),
       content = DownloadSource(format("{jdk_location}{check_db_connection_jar_name}")),
       mode = 0644,

@@ -60,7 +60,7 @@
     
   <property>
     <name>ranger.ks.jpa.jdbc.user</name>
-    <value>{{db_user}}</value>
+    <value>rangerkms</value>
     <description>Database username used for operation</description>
   </property>
   

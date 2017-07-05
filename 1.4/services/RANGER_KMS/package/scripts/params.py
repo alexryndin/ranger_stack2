@@ -123,6 +123,8 @@ downloaded_custom_connector = format("{tmp_dir}/{jdbc_jar_name}")
 driver_curl_source = format("{jdk_location}/{jdbc_symlink_name}")
 driver_curl_target = format("{java_share_dir}/{jdbc_jar_name}")
 ews_lib_jar_path = format("{kms_home}/ews/webapp/lib/{jdbc_jar_name}")
+# TODO: Remove that shit!!!!!
+ews_classes_conf = format("{kms_home}/ews/webapp/WEB-INF/classes/conf")
 
 if db_flavor == 'sqla':
   downloaded_custom_connector = format("{tmp_dir}/sqla-client-jdbc.tar.gz")

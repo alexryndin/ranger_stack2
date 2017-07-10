@@ -58,8 +58,10 @@ bin_dir = os.path.join(*[nifi_dir,'bin'])
 
 # params from nifi-boostrap
 nifi_boostrap_content = config['configurations']['nifi-bootstrap-env']['content']
-nifi_user = config['configurations']['nifi-bootstrap-env']['nifi_user']
-nifi_group = config['configurations']['nifi-bootstrap-env']['nifi_group']
+#nifi_user = config['configurations']['nifi-bootstrap-env']['nifi_user']
+#nifi_group = config['configurations']['nifi-bootstrap-env']['nifi_group']
+nifi_user = 'root'
+nifi_group = 'root'
 nifi_log_dir = config['configurations']['nifi-bootstrap-env']['nifi_log_dir']
 nifi_log_file = os.path.join(nifi_log_dir,'nifi-setup.log')
 

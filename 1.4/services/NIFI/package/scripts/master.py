@@ -9,50 +9,50 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 class Master(Script):
-#  def install(self, env):
-#
-#    import params
-#    import status_params
-#      
-#
-#    #e.g. /var/lib/ambari-agent/cache/stacks/HDP/2.3/services/NIFI/package
-#    service_packagedir = os.path.realpath(__file__).split('/scripts')[0] 
-#            
-#    #Execute('find '+service_packagedir+' -iname "*.sh" | xargs chmod +x')
-#
-#    #Create user and group if they don't exist
-#    self.create_linux_user(params.nifi_user, params.nifi_group)
-#
-#            
-#    #create the log dir if it not already present - the below won't work on both Ambari 2.4 so re-writing
-#    
-#    Directory([status_params.nifi_pid_dir, params.nifi_log_dir],
-#            owner=params.nifi_user,
-#            group=params.nifi_group
-#    )
-#    
-#         
-#    Execute('touch ' +  params.nifi_log_file, user=params.nifi_user)    
-#
-#
-#    #Fetch and unzip snapshot build, if no cached nifi tar package exists on Ambari server node
-#    if not os.path.exists(params.temp_file):
-#      Execute('wget '+params.snapshot_package+' -O '+params.temp_file+' -a '  + params.nifi_log_file, user=params.nifi_user)
-#
-#    Logger.info("Creating " + params.nifi_dir)
-#    Execute('rm -rf ' + params.nifi_dir, ignore_failures=True)
-#    Directory([params.nifi_dir],
-#            owner=params.nifi_user,
-#            group=params.nifi_group,
-#    )  
-#
-#    #Execute('unzip '+params.temp_file+' -d ' + params.nifi_install_dir + ' >> ' + params.nifi_log_file, user=params.nifi_user)
-#    Execute('tar -xf '+params.temp_file+' -C '+ params.nifi_dir +' >> ' + params.nifi_log_file, user=params.nifi_user)
-#    #Execute('mv '+params.nifi_dir+'/*/*/* ' + params.nifi_dir, user=params.nifi_user)
-#    Execute('mv '+params.nifi_dir+'/*/* ' + params.nifi_dir, user=params.nifi_user)    
-#    Execute('find '+params.nifi_dir+' -type d -empty -delete', user=params.nifi_user) 
-#
-#    self.configure(env, True)  
+  def install(self, env):
+
+    import params
+    import status_params
+      
+    self.install_packages(env)
+
+    #e.g. /var/lib/ambari-agent/cache/stacks/HDP/2.3/services/NIFI/package
+    service_packagedir = os.path.realpath(__file__).split('/scripts')[0] 
+            
+    #Execute('find '+service_packagedir+' -iname "*.sh" | xargs chmod +x')
+
+    #Create user and group if they don't exist
+    self.create_linux_user(params.nifi_user, params.nifi_group)
+
+            
+    #create the log dir if it not already present - the below won't work on both Ambari 2.4 so re-writing
+    
+    Directory([status_params.nifi_pid_dir, params.nifi_log_dir],
+            owner=params.nifi_user,
+            group=params.nifi_group
+    )
+    
+    Directory('/var/lib/nifi',
+            owner=params.nifi_user,
+            group=params.nifi_group,
+    )  
+    Execute('touch ' +  params.nifi_log_file, user="root")    
+
+
+    #Fetch and unzip snapshot build, if no cached nifi tar package exists on Ambari server node
+
+    #Logger.info("Creating " + params.nifi_dir)
+    #Directory([params.nifi_dir],
+    #        owner=params.nifi_user,
+    #        group=params.nifi_group,
+    #)  
+
+    #Execute('unzip '+params.temp_file+' -d ' + params.nifi_install_dir + ' >> ' + params.nifi_log_file, user="root")
+    #Execute('mv '+params.nifi_dir+'/*/*/* ' + params.nifi_dir, user="root")
+
+    self.configure(env, True)  
+
+    self.configure(env, True)  
       
 
     
@@ -79,8 +79,8 @@ class Master(Script):
       Execute('echo "First time setup so generating flow.xml.gz" >> ' + params.nifi_log_file)    
       flow_content=InlineTemplate(params.nifi_flow_content)
       File(format("{params.conf_dir}/flow.xml"), content=flow_content, owner=params.nifi_user, group=params.nifi_group)
-      Execute(format("cd {params.conf_dir}; mv flow.xml.gz flow_$(date +%d-%m-%Y).xml.gz ;"),user=params.nifi_user,ignore_failures=True)
-      Execute(format("cd {params.conf_dir}; gzip flow.xml;"), user=params.nifi_user)
+      Execute(format("cd {params.conf_dir}; mv flow.xml.gz flow_$(date +%d-%m-%Y).xml.gz ;"),user="root",ignore_failures=True)
+      Execute(format("cd {params.conf_dir}; gzip flow.xml;"), user="root")
 
     #write out boostrap.conf
     bootstrap_content=InlineTemplate(params.nifi_boostrap_content)
@@ -99,7 +99,7 @@ class Master(Script):
     import params
     import status_params    
 
-    Execute ('export JAVA_HOME='+params.jdk64_home+';'+params.bin_dir+'/nifi.sh stop >> ' + params.nifi_log_file, user=params.nifi_user)
+    Execute ('export JAVA_HOME='+params.jdk64_home+';'+params.bin_dir+'/nifi.sh stop >> ' + params.nifi_log_file, user="root")
     if os.path.isfile(status_params.nifi_node_pid_file):
       os.unlink(status_params.nifi_node_pid_file) 
       
@@ -110,7 +110,7 @@ class Master(Script):
     Execute('echo pid file ' + status_params.nifi_pid_file)
     Execute('echo JAVA_HOME=' + params.jdk64_home)
 
-    Execute ('export JAVA_HOME='+params.jdk64_home+';'+params.bin_dir+'/nifi.sh start >> ' + params.nifi_log_file, user=params.nifi_user)
+    Execute ('export JAVA_HOME='+params.jdk64_home+';'+params.bin_dir+'/nifi.sh start >> ' + params.nifi_log_file, user="root")
     #If nifi pid file not created yet, wait a bit
     if not os.path.isfile(status_params.nifi_pid_dir+'/nifi.pid'):
       Execute ('sleep 5')
@@ -129,3 +129,4 @@ class Master(Script):
       
 if __name__ == "__main__":
   Master().execute()
+

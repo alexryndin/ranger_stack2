@@ -32,6 +32,8 @@ class Master(Script):
             group=params.nifi_group
     )
     
+    Execute('chown ' + params.nifi_user + ':' + params.nifi_group + ' -R ' + params.conf_dir)
+    
     Directory('/var/lib/nifi',
             owner=params.nifi_user,
             group=params.nifi_group,

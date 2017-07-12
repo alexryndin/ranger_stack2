@@ -53,7 +53,7 @@ nifi_node_protocol_port = config['configurations']['nifi-ambari-config']['nifi.n
 nifi_dir = nifi_install_dir
 #nifi_dir = os.path.join(*[nifi_install_dir,nifi_dirname])
 
-conf_dir = os.path.join(*[nifi_dir,'conf'])
+conf_dir = '/etc/nifi/conf'
 bin_dir = os.path.join(*[nifi_dir,'bin'])
 
 # params from nifi-boostrap

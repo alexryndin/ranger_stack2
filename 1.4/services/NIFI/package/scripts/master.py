@@ -30,7 +30,8 @@ class Master(Script):
     Directory([status_params.nifi_pid_dir, params.nifi_log_dir],
             owner=params.nifi_user,
             group=params.nifi_group
-    )
+
+    Execute('chown ' + params.nifi_user + ':' + params.nifi_group + ' -R ' + params.conf_dir)
     
     Directory('/var/lib/nifi',
             owner=params.nifi_user,

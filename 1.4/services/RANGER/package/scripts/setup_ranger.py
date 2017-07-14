@@ -31,8 +31,17 @@ def ranger(name=None):
     setup_usersync()
 
 def setup_ranger_admin():
+
   import params
 
+  ranger_home = params.ranger_home
+  ranger_conf = params.ranger_conf
+
+  Directory(ranger_conf,
+    owner = params.unix_user,
+    group = params.unix_group,
+    recursive = True
+  )
   check_db_connnection()
   
   File(params.downloaded_custom_connector,
@@ -45,7 +54,7 @@ def setup_ranger_admin():
           sudo=True)
 
   File(params.driver_curl_target, mode=0644)
-
+  Logger.info('Fuck! ranger_home = ') 
   ModifyPropertiesFile(format("{ranger_home}/install.properties"),
     properties = params.config['configurations']['admin-properties']
   )

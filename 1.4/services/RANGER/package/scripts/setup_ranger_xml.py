@@ -44,6 +44,7 @@ def ranger(name=None, upgrade_type=None):
     setup_usersync(upgrade_type=upgrade_type)
 
 def setup_ranger_admin(upgrade_type=None):
+  Logger.info('fuck! setup ranger now from setup xml, obviously xml_config is supported')
   import params
 
   ranger_home = params.ranger_home

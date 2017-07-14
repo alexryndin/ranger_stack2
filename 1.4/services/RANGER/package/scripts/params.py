@@ -70,8 +70,6 @@ usersync_home  = '/usr/lib/ranger-usersync'
 usersync_start = '/usr/lib/ranger-usersync/start.sh'
 usersync_stop  = '/usr/lib/ranger-usersync/stop.sh'
 ranger_ugsync_conf = '/etc/ranger/usersync/conf'
-ranger_conf = '/usr/lib/ranger-admin/conf'
-ranger_ugsync_conf = '/usr/lib/ranger-usersync/conf'
 hadoop_conf = '/etc/hadoop/conf'
 hadoop_conf_dir = '/etc/hadoop/conf'
 

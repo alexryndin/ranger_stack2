@@ -30,7 +30,27 @@
       <overridable>false</overridable>
     </value-attributes>
   </property>
-
+  <property>
+    <name>create_db_dbuser</name>
+    <value>true</value>
+    <display-name>Setup Database and Database User</display-name>
+    <description>If set to Yes, Ambari will create and setup Ranger Database and Database User. This will require to specify Database Admin user and password</description>
+    <value-attributes>
+      <type>value-list</type>
+      <overridable>false</overridable>
+      <entries>
+        <entry>
+          <value>true</value>
+          <label>Yes</label>
+        </entry>
+        <entry>
+          <value>false</value>
+          <label>No</label>
+        </entry>
+      </entries>
+      <selection-cardinality>1</selection-cardinality>
+    </value-attributes>
+  </property>
   <property>
     <name>ranger_group</name>
     <value>ranger</value>
@@ -95,7 +115,7 @@
 
   <property>
     <name>xml_configurations_supported</name>
-    <value>false</value>
+    <value>true</value>
     <description></description>
   </property>
 

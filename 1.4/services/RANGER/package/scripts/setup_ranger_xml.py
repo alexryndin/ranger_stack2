@@ -232,11 +232,11 @@ def setup_java_patch(upgrade_type=None):
     env_dict = {'RANGER_ADMIN_HOME':ranger_home, 'JAVA_HOME':params.java_home, 'LD_LIBRARY_PATH':params.ld_lib_path}
 
   setup_java_patch = format('python {ranger_home}/db_setup.py -javapatch')
-  Execute(setup_java_patch, 
-          environment=env_dict,
-          logoutput=True,
-          user=params.unix_user,
-  )
+  #Execute(setup_java_patch, 
+  #        environment=env_dict,
+  #        logoutput=True,
+  #        user='root',
+  #)
 
 
 def do_keystore_setup(upgrade_type=None):

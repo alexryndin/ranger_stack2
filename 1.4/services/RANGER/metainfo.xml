@@ -79,6 +79,8 @@
         <config-type>admin-properties</config-type>
         <config-type>ranger-site</config-type>
         <config-type>usersync-properties</config-type>
+        <config-type>ranger-ugsync-site</config-type> 
+        <config-type>ranger-admin-site</config-type> 
       </configuration-dependencies>
 
       <commandScript>

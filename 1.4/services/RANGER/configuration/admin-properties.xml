@@ -92,7 +92,7 @@
 
   <property>
     <name>db_host</name>
-    <value></value>
+    <value>localhost</value>
     <display-name>Ranger DB host</display-name>
     <description>Database host</description>
     <value-attributes>
@@ -242,7 +242,7 @@
 
   <property>
     <name>xa_ldap_url</name>
-    <value>"ldap://71.127.43.33:389"</value>
+    <value>ldap://locahost:389</value>
     <description></description>
     <value-attributes>
       <overridable>false</overridable>
@@ -282,7 +282,7 @@
   <property>
     <name>xa_ldap_ad_domain</name>
     <display-name>Domain Name (AD specific)</display-name>
-    <value></value>
+    <value>localhost</value>
     <description>AD domain, only used if Authentication method is AD</description>
     <value-attributes>
       <overridable>false</overridable>
@@ -291,7 +291,7 @@
 
   <property>
     <name>xa_ldap_ad_url</name>
-    <value></value>
+    <value>ldap://locahost:389</value>
     <description></description>
     <value-attributes>
       <overridable>false</overridable>

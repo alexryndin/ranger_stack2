@@ -42,6 +42,40 @@
     </value-attributes>
   </property>
   <property>
+    <name>ranger.usersync.keystore.password</name>
+    <value>UnIx529p</value>
+    <property-type>PASSWORD</property-type>
+    <description>Keystore password</description>
+    <value-attributes>
+      <type>password</type>
+    </value-attributes>
+  </property>
+  <property>
+    <name>ranger.usersync.ldap.ldapbindpassword</name>
+    <display-name>Bind User Password</display-name>
+    <value/>
+    <property-type>PASSWORD</property-type>
+    <description>Password for the LDAP bind user used for searching users.</description>
+    <value-attributes>
+      <type>password</type>
+    </value-attributes>
+  </property>
+  <property>
+    <name>ranger.usersync.truststore.password</name>
+    <value>changeit</value>
+    <property-type>PASSWORD</property-type>
+    <description>Truststore password</description>
+    <value-attributes>
+      <type>password</type>
+    </value-attributes>
+  </property>
+  <property>
+    <name>ranger.usersync.keystore.file</name>
+    <value>/etc/ranger/usersync/conf/unixauthservice.jks</value>
+    <description>Keystore file used for usersync</description>
+  </property>
+
+  <property>
     <name>MIN_UNIX_USER_ID_TO_SYNC</name>
     <display-name>Minimum User ID</display-name>
     <value>1000</value>
@@ -72,13 +106,19 @@
   <property>
     <name>SYNC_LDAP_URL</name>
     <display-name>LDAP (AD) URL</display-name>
-    <value></value>
+    <value>ldap://localhost:389</value>
     <description>LDAP server URL. Example value = ldap://localhost:389</description>
+  </property>
+  <property>
+    <name>usersync_conf</name>
+    <display-name>usersync_conf</display-name>
+    <value>/etc/ranger/usersync/conf</value>
+    <description></description>
   </property>
   <property>
     <name>SYNC_LDAP_BIND_DN</name>
     <display-name>​Bind User</display-name>
-    <value></value>
+    <value>cn=admin</value>
     <description>Full distinguished name (DN), including common name (CN), of an LDAP user account that has privileges to search for users. Example: cn=admin,ou=users,dc=hadoop,dc=apache,dc-org</description>
   </property>
   <property>
@@ -96,7 +136,7 @@
   <property>
     <name>SYNC_LDAP_USER_SEARCH_BASE</name>
     <display-name>User Search Base</display-name>
-    <value></value>
+    <value>ou=users</value>
     <description>sample value would be ou=users,dc=hadoop,dc=apache,dc=org</description>
   </property>
   <property>
